@@ -2,15 +2,14 @@ import random
 import subprocess
 import time
 import os
-from termcolor import colored
 
 HEIGHT_CONST = 20
 WIDTH_CONST = 60
 field = [0]
 ITEMS = {0: ' ',
          1: '#',
-         2: colored('F', 'blue'),
-         3: colored('s', 'red')}
+         2: "\x1b[1;34m" + 'F' + "\x1b[0m",
+         3: "\x1b[1;31m" + 's' + "\x1b[0m"}
 
 
 def choose(i):
@@ -26,7 +25,7 @@ def choose(i):
 def fillfield():
     result = [0] * HEIGHT_CONST
     for i in range(HEIGHT_CONST):
-        result[i] = [choose(random.randint(0, 10)) for i in range(WIDTH_CONST)]
+        result[i] = [choose(random.randint(0, 10)) for h in range(WIDTH_CONST)]
     return result
 
 
@@ -42,9 +41,10 @@ def countneighbours(i, j, type):
 
 def printfield():
     for k in field:
+        s = ''
         for g in k:
-            print(ITEMS[g], end='')
-        print()
+            s = s + ITEMS[g]
+        print(s)
 
 
 def work():
@@ -70,6 +70,9 @@ field = fillfield()
 printfield()
 while True:
     printfield()
+    print(ITEMS[1] + " - Rocks")
+    print(ITEMS[2] + " - Fishes")
+    print(ITEMS[3] + " - Shrimps")
     work()
     time.sleep(1)
     subprocess.call('clear' if os.name =='posix' else 'cls')
