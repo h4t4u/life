@@ -2,9 +2,17 @@ import random
 import subprocess
 import time
 import os
+from argparse import ArgumentParser
 
-HEIGHT_CONST = 20
-WIDTH_CONST = 60
+parser = ArgumentParser()
+parser.add_argument("-W", "--width", dest="width", type=int, metavar="WIDTH", help="Set window width", default=60)
+parser.add_argument("-H", "--height", dest="height", type=int, metavar="HEIGHT", help="Set window height", default=20)
+parser.add_argument("-d", "--delay", dest="delay", type=float, metavar="dT", help="Set iteration delay", default=1)
+
+args = parser.parse_args()
+
+HEIGHT_CONST = args.height
+WIDTH_CONST = args.width
 field = [0]
 ITEMS = {0: ' ',
          1: '#',
@@ -74,5 +82,5 @@ while True:
     print(ITEMS[2] + " - Fishes")
     print(ITEMS[3] + " - Shrimps")
     work()
-    time.sleep(1)
+    time.sleep(args.delay)
     subprocess.call('clear' if os.name =='posix' else 'cls')
